@@ -3,9 +3,9 @@ import logging
 from sqlalchemy.exc import IntegrityError
 
 from models.models import Lab, db
+from models.models import Branch
 
 logger = logging.getLogger(__name__)
-
 
 class LaboratoryService:
     def __init__(self, lab_id=None, lab=None):
@@ -199,4 +199,53 @@ class LaboratoryService:
             )    
 
 
-        
+    # داخل كلاس LaboratoryService أضف هذه الدوال:
+    def get_branches(self):
+        lab_id = self.get_current_laboratory_id()
+        if not lab_id:
+            # Fallback لو الـ lab_id كان فاضي يجيب كل الفروع
+            return Branch.query.order_by(Branch.id.asc()).all()
+        return Branch.query.filter_by(laboratory_id=lab_id).order_by(Branch.id.asc()).all()
+    def create_branch(self, name, address, phone_number, working_hours):
+        lab_id = self.get_current_laboratory_id()
+        if not lab_id:
+            return None, "لم يتم العثور على المعمل الرئيسي"
+        try:
+            branch = Branch(
+                laboratory_id=lab_id,
+                name=name.strip(),
+                address=address.strip(),
+                phone_number=(phone_number or "").strip(),
+                working_hours=(working_hours or "").strip()
+            )
+            db.session.add(branch)
+            db.session.commit()
+            return branch, "تم إضافة الفرع بنجاح"
+        except Exception as e:
+            db.session.rollback()
+            return None, f"خطأ أثناء إضافة الفرع: {e}"
+    def update_branch(self, branch_id, name, address, phone_number, working_hours):
+        branch = db.session.get(Branch, branch_id)
+        if not branch:
+            return None, "الفرع غير موجود"
+        try:
+            branch.name = name.strip()
+            branch.address = address.strip()
+            branch.phone_number = (phone_number or "").strip()
+            branch.working_hours = (working_hours or "").strip()
+            db.session.commit()
+            return branch, "تم تعديل الفرع بنجاح"
+        except Exception as e:
+            db.session.rollback()
+            return None, f"خطأ أثناء تعديل الفرع: {e}"
+    def delete_branch(self, branch_id):
+        branch = db.session.get(Branch, branch_id)
+        if not branch:
+            return False, "الفرع غير موجود"
+        try:
+            db.session.delete(branch)
+            db.session.commit()
+            return True, "تم حذف الفرع بنجاح"
+        except Exception as e:
+            db.session.rollback()
+            return False, f"خطأ أثناء حذف الفرع: {e}"

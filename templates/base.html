@@ -69,6 +69,13 @@
       <i data-lucide="message-square-warning" class="nav-icon"></i>
       الشكاوى
     </a>
+    
+    <!-- 🌟 رابط نتائج التحاليل الجديد تحت الشكاوى مباشرة 🌟 -->
+    <a href="{{ url_for('results.list_results') }}"
+       class="nav-item {% if request.endpoint in ['results.list_results'] %}active{% endif %}">
+      <i data-lucide="file-check-2" class="nav-icon"></i>
+      نتائج التحاليل
+    </a>
 
     <p class="nav-section-label">الخدمات والباقات</p>
 

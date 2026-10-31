@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}طلبات نتائج التحاليل — معمل جيزة لاب{% endblock %}
+{% block topbar_title %}طلبات نتائج التحاليل{% endblock %}
+{% block topbar_sub %}قائمة المرضى الراغبين في استلام نتائج الفحوصات والتحاليل{% endblock %}
+
+{% block content %}
+
+<!-- شريط البحث والفلترة -->
+<div class="search-filter-card" style="margin-bottom: 20px;">
+  <form method="GET" class="filter-form" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 250px;">
+      <input type="text" name="search" class="form-control" placeholder="ابحث برقم التليفون أو اسم الفرع..." value="{{ search }}">
+    </div>
+    <div style="width: 180px;">
+      <select name="status" class="form-control" onchange="this.form.submit()">
+        <option value="">جميع الحالات</option>
+        {% for s in Status %}
+        <option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>
+          {{ 'قيد الانتظار' if s.value == 'Pending' else ('تمت المراجعة والارسال' if s.value == 'Reviewed' else s.value) }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary"><i data-lucide="search"></i> بحث</button>
+  </form>
+</div>
+
+<!-- جدول طلبات النتائج -->
+<div class="table-wrap ts-table-wrap">
+  <table class="data-table ts-data-table">
+    <thead>
+      <tr>
+        <th style="width: 50px;">#</th>
+        <th>رقم الهاتف</th>
+        <th>اسم الفرع</th>
+        <th>تاريخ الطلب</th>
+        <th>المنصة</th>
+        <th>الحالة</th>
+        <th style="width: 160px; text-align: center;">تحديث الحالة</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in results %}
+      <tr>
+        <td><span class="ts-id-chip">#{{ item.id }}</span></td>
+        <td>
+          <strong style="direction: ltr; display: inline-block;">
+            <i data-lucide="phone" style="width: 13px; vertical-align: middle;"></i>
+            {{ item.phone_number }}
+          </strong>
+        </td>
+        <td>
+          <span class="ts-lab-tag">
+            <i data-lucide="building-2"></i>
+            {{ item.branch_name }}
+          </span>
+        </td>
+        <td style="font-size: 0.85rem; color: var(--ink-500);">
+          {{ item.created_at.strftime('%Y-%m-%d %I:%M %p') }}
+        </td>
+        <td>
+          <span class="status-chip">{{ item.comes_from }}</span>
+        </td>
+        <td>
+          {% if item.status.value == 'Pending' %}
+            <span class="status-chip pending">قيد الانتظار</span>
+          {% elif item.status.value == 'Reviewed' %}
+            <span class="status-chip active">تم الإرسال</span>
+          {% else %}
+            <span class="status-chip">{{ item.status.value }}</span>
+          {% endif %}
+        </td>
+        <td style="text-align: center;">
+          <form method="POST" action="{{ url_for('results.update_status', request_id=item.id) }}">
+            <select name="status_val" class="form-control form-control-sm" onchange="this.form.submit()" style="font-size: 0.8rem; height: 32px;">
+              {% for s in Status %}
+              <option value="{{ s.value }}" {% if item.status == s %}selected{% endif %}>
+                {{ 'قيد الانتظار' if s.value == 'Pending' else ('تم الإرسال' if s.value == 'Reviewed' else s.value) }}
+              </option>
+              {% endfor %}
+            </select>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7" style="text-align: center; padding: 48px 20px;">
+          <div class="ts-empty-icon"><i data-lucide="file-check-2"></i></div>
+          <h4>لا توجد طلبات نتائج حتى الآن</h4>
+          <p style="color: var(--ink-500);">أي طلب نتيجة يستقبله البوت عبر الشات سيظهر هنا تلقائياً.</p>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- ترقيم الصفحات (Pagination) -->
+{% if pagination and pagination.pages > 1 %}
+<div class="pagination-wrap" style="display: flex; justify-content: center; gap: 8px; margin-top: 20px;">
+  {% for p in pagination.iter_pages() %}
+    {% if p %}
+      <a href="{{ url_for('results.list_results', page=p, search=search, status=status) }}"
+         class="btn btn-sm {% if p == pagination.page %}btn-primary{% else %}btn-outline{% endif %}">
+        {{ p }}
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

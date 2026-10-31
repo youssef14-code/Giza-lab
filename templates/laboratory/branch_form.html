@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'تعديل فرع' if is_edit else 'إضافة فرع جديد' }} — معمل جيزة لاب{% endblock %}
+
+{% block topbar_title %}
+<div style="display: flex; align-items: center; gap: 12px;">
+  <div class="header-icon-badge"><i data-lucide="map-pin"></i></div>
+  <span style="font-size: 1.35rem; font-weight: 800;">{{ 'تعديل بيانات الفرع' if is_edit else 'إضافة فرع جديد' }}</span>
+</div>
+{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ url_for('laboratory.list_laboratories') }}" class="btn btn-outline btn-sm">
+  <i data-lucide="arrow-right"></i> العودة لقائمة الفروع
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="form-container" style="max-width: 650px;">
+  <div class="section-card">
+    <form method="POST">
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label class="field-label">اسم الفرع <span class="required-star">*</span></label>
+        <input type="text" name="name" class="form-control" placeholder="مثال: فرع العباسية / فرع الدقي" value="{{ branch.name if branch else '' }}" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label class="field-label">العنوان بالتفصيل <span class="required-star">*</span></label>
+        <input type="text" name="address" class="form-control" placeholder="مثال: 72 شارع العباسية - أمام محطة مترو عبده باشا" value="{{ branch.address if branch else '' }}" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label class="field-label">رقم الهاتف والتواصل</label>
+        <input type="text" name="phone_number" class="form-control" placeholder="مثال: 01012345678 / 0223456789" value="{{ branch.phone_number if branch else '' }}">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 24px;">
+        <label class="field-label">مواعيد العمل</label>
+        <input type="text" name="working_hours" class="form-control" placeholder="مثال: يومياً من 8 ص إلى 11 م، والجمعة من 9 ص إلى 10 م" value="{{ branch.working_hours if branch else '' }}">
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <a href="{{ url_for('laboratory.list_laboratories') }}" class="btn btn-outline">إلغاء</a>
+        <button type="submit" class="btn btn-primary">
+          <i data-lucide="save"></i> حفظ الفرع
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

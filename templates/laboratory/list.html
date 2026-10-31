@@ -1,89 +1,105 @@
 {% extends "base.html" %}
 
-{% block title %}إدارة المعامل — معمل جيزة لاب{% endblock %}
-
+{% block title %}إدارة الفروع والمعمل — معمل جيزة لاب{% endblock %}
 {% block topbar_title %}إدارة المعامل والفروع{% endblock %}
-{% block topbar_sub %}قائمة الفروع والمعامل التابعة للمنظومة{% endblock %}
+{% block topbar_sub %}قائمة الفروع التابعة لمعمل جيزة لاب{% endblock %}
 
-
+{% block topbar_actions %}
+<a href="{{ url_for('laboratory.create_branch') }}" class="btn btn-primary" style="height: 38px;">
+  <i data-lucide="plus-circle"></i>
+  إضافة فرع جديد
+</a>
+{% endblock %}
 
 {% block content %}
 
+<!-- إحصائيات سريعة -->
 <div class="ts-stats-strip">
   <div class="ts-stat-pill">
     <div class="ts-stat-pill-icon si-blue"><i data-lucide="building-2"></i></div>
     <div>
-      <div class="ts-stat-pill-value">{{ laboratories|length }}</div>
-      <div class="ts-stat-pill-label">إجمالي المعامل والفروع</div>
+      <div class="ts-stat-pill-value">{{ lab.name if lab else 'معمل جيزة لاب' }}</div>
+      <div class="ts-stat-pill-label">المعمل الرئيسي</div>
     </div>
   </div>
   <div class="ts-stat-pill">
-    <div class="ts-stat-pill-icon si-purple"><i data-lucide="test-tube-2"></i></div>
+    <div class="ts-stat-pill-icon si-purple"><i data-lucide="map-pin"></i></div>
     <div>
-      <div class="ts-stat-pill-value">{{ laboratories|map(attribute='lab_services')|map('length')|sum }}</div>
-      <div class="ts-stat-pill-label">إجمالي التحاليل المرتبطة</div>
+      <div class="ts-stat-pill-value">{{ branches|length }}</div>
+      <div class="ts-stat-pill-label">إجمالي الفروع النشطة</div>
+    </div>
+  </div>
+  <div class="ts-stat-pill">
+    <div class="ts-stat-pill-icon si-green"><i data-lucide="test-tube-2"></i></div>
+    <div>
+      <div class="ts-stat-pill-value">{{ lab.lab_services|length if lab else 142 }}</div>
+      <div class="ts-stat-pill-label">إجمالي التحاليل المتاحة</div>
     </div>
   </div>
 </div>
 
+<!-- جدول الفروع -->
 <div class="table-wrap ts-table-wrap">
   <table class="data-table ts-data-table">
     <thead>
       <tr>
-        <th style="width: 60px;">#</th>
-        <th>اسم المعمل / الفرع</th>
-        <th>الموقع والمدينة</th>
-        <th>الوصف</th>
-        <th>التحاليل المرتبطة</th>
+        <th style="width: 50px;">#</th>
+        <th>اسم الفرع</th>
+        <th>العنوان والموقع</th>
+        <th>رقم التليفون</th>
+        <th>مواعيد العمل</th>
         <th style="width: 140px; text-align: center;">الإجراءات</th>
       </tr>
     </thead>
     <tbody>
-      {% for lab in laboratories %}
+      {% for branch in branches %}
       <tr>
-        <td><span class="ts-id-chip">#{{ lab.id }}</span></td>
+        <td><span class="ts-id-chip">#{{ branch.id }}</span></td>
         <td>
           <div class="ts-test-name-cell">
             <div class="ts-test-avatar lb-avatar"><i data-lucide="building-2"></i></div>
-            <div class="ts-test-name-text">{{ lab.name }}</div>
+            <strong class="ts-test-name-text">{{ branch.name }}</strong>
           </div>
         </td>
         <td>
           <span class="ts-lab-tag">
             <i data-lucide="map-pin"></i>
-            {{ lab.location }}
+            {{ branch.address }}
           </span>
         </td>
         <td>
-          <span style="font-size: 0.82rem; color: var(--ink-500);">
-            {{ lab.description or '—' }}
+          <span style="direction: ltr; display: inline-block;">
+            <i data-lucide="phone" style="width: 13px; vertical-align: middle;"></i>
+            {{ branch.phone_number or '—' }}
           </span>
         </td>
         <td>
-          <span class="status-chip new">
-            <i data-lucide="test-tube-2" style="width: 12px; height: 12px;"></i>
-            {{ lab.lab_services|length if lab.lab_services else 0 }} تحليل
+          <span style="font-size: 0.85rem; color: var(--ink-600);">
+            <i data-lucide="clock" style="width: 13px; vertical-align: middle;"></i>
+            {{ branch.working_hours or '—' }}
           </span>
         </td>
         <td style="text-align: center;">
-          <a href="{{ url_for('laboratory.edit_laboratory', lab_id=lab.id) }}"
-             class="btn btn-outline btn-sm ts-action-btn">
-            <i data-lucide="edit-2"></i>
-            تعديل
-          </a>
+          <div style="display: flex; gap: 6px; justify-content: center;">
+            <a href="{{ url_for('laboratory.edit_branch', branch_id=branch.id) }}" class="btn btn-outline btn-sm">
+              <i data-lucide="edit-2"></i> تعديل
+            </a>
+            <form method="POST" action="{{ url_for('laboratory.delete_branch', branch_id=branch.id) }}" onsubmit="return confirm('هل أنت متأكد من حذف هذا الفرع؟');" style="display:inline;">
+              <button type="submit" class="btn btn-outline btn-sm" style="color: var(--danger-color, #dc2626);">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </form>
+          </div>
         </td>
       </tr>
       {% else %}
       <tr>
-        <td colspan="6" style="text-align: center; padding: 56px 20px;">
-          <div class="ts-empty-icon"><i data-lucide="building-2"></i></div>
-          <h4 style="font-size: 1.05rem; margin-bottom: 6px;">لا توجد معامل مضافة حالياً</h4>
-          <p style="color: var(--ink-500); font-size: 0.85rem; margin-bottom: 18px;">
-            ابدأ بإضافة معمل أو فرع جديد إلى المنظومة.
-          </p>
-          <a href="{{ url_for('laboratory.create_laboratory') }}" class="btn btn-primary">
-            <i data-lucide="plus-circle"></i>
-            إضافة معمل / فرع جديد
+        <td colspan="6" style="text-align: center; padding: 48px 20px;">
+          <div class="ts-empty-icon"><i data-lucide="map-pin-off"></i></div>
+          <h4>لا توجد فروع مضافة حالياً</h4>
+          <p style="color: var(--ink-500); margin-bottom: 16px;">ابدأ بإضافة أول فرع من فروع معمل جيزة لاب الـ 5.</p>
+          <a href="{{ url_for('laboratory.create_branch') }}" class="btn btn-primary">
+            <i data-lucide="plus-circle"></i> إضافة فرع جديد
           </a>
         </td>
       </tr>
@@ -91,5 +107,4 @@
     </tbody>
   </table>
 </div>
-
 {% endblock %}

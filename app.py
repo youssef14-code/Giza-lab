@@ -20,6 +20,7 @@ from routes.webhook_routes import webhook_bp
 from routes.bundle_routes import bundle_bp
 from routes.health_routes import health_bp
 from routes.public_routes import public_bp
+from routes.result_routes import results_bp
 
 
 import logging
@@ -88,6 +89,7 @@ def create_app(config_class=Config):
     app.register_blueprint(bundle_bp)
     app.register_blueprint(health_bp)
     app.register_blueprint(public_bp)
+    app.register_blueprint(results_bp)
 
     # Context processor for sidebar badges and layout counters
     @app.context_processor

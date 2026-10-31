@@ -54,7 +54,7 @@ except ImportError:
     app = create_app()
 
 from models.models import db, Laboratory  # noqa: E402
-import services.tests_service as tests_service_module  # noqa: E402
+import services.domain.tests_service as tests_service_module # noqa: E402
 from services.domain.tests_service import TestsService  # noqa: E402
 from services.shared.generation_service import generate_test  # noqa: E402
 from services.shared.vector_service import upsert_test_vector as _real_upsert_test_vector  # noqa: E402
@@ -90,25 +90,44 @@ def get_target_laboratory():
     return lab
 
 
-def read_excel_rows(excel_path: str):
-    """
-    بيقرأ الشيت وبيرجع list of dicts: [{"type":..., "name":..., "price":...}, ...]
-    """
-    wb = openpyxl.load_workbook(excel_path, data_only=True)
-    ws = wb.active
+import csv
 
+def read_excel_rows(file_path: str):
+    """
+    بيقرأ ملف الـ CSV وبيرجع list of dicts:
+    [{"name": ..., "tube": ..., "price": ...}, ...]
+    """
     rows = []
+    # لو الملف CSV
+    if file_path.endswith('.csv'):
+        with open(file_path, mode='r', encoding='utf-8-sig') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                name = row.get("analysis") or row.get("name")
+                if not name or not name.strip():
+                    continue
+                rows.append({
+                    "name": name.strip(),
+                    "tube": (row.get("tube") or "").strip(),
+                    "price": float(row.get("price") or 0.0),
+                })
+        return rows
+
+    # لو الملف Excel (.xlsx)
+    import openpyxl
+    wb = openpyxl.load_workbook(file_path, data_only=True)
+    ws = wb.active
     for row in ws.iter_rows(min_row=2, values_only=True):
-        row_type, name, price = row[0], row[1], row[2]
+        name = row[0]
+        tube = row[1] if len(row) > 2 else ""
+        price = row[2] if len(row) > 2 else row[1]
         if not name or str(name).strip() == "":
             continue
-        rows.append(
-            {
-                "type": (row_type or "").strip() if isinstance(row_type, str) else row_type,
-                "name": str(name).strip(),
-                "price": float(price) if price not in (None, "") else 0.0,
-            }
-        )
+        rows.append({
+            "name": str(name).strip(),
+            "tube": str(tube or "").strip(),
+            "price": float(price) if price not in (None, "") else 0.0,
+        })
     return rows
 
 
@@ -279,6 +298,7 @@ def main():
         try:
             for i, row in enumerate(rows, start=1):
                 name = row["name"]
+                tube = row.get("tube", "")
                 price = row["price"]
 
                 print(f"[{i}/{total}] {name} ...", end=" ")
@@ -346,6 +366,7 @@ def main():
                         sample_type=generated.sample_type,
                         keywords=generated.keywords,
                         alias_name=generated.alias_name,
+                        tube=tube,  # <-- مرر الـ tube هنا
                     )
 
                     if new_test:

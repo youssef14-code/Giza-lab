@@ -40,7 +40,7 @@ class Config:
 
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     OPENAI_MODEL = os.getenv("OPENAI_MODEL")    
-
+    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
     
     
     FEEDBACK_BASE_URL = os.getenv("FEEDBACK_BASE_URL")

@@ -41,10 +41,21 @@ class Laboratory(db.Model):
     lab_services = db.relationship('LabService', backref='laboratory', lazy=True)
     pages = db.relationship('Page', backref='laboratory', lazy=True)
     lab_inquiries = db.relationship('Inquiry', backref='laboratory', lazy=True)
+    branches = db.relationship('Branch', backref='laboratory', lazy=True, cascade="all, delete-orphan")
 
 
 # Compatibility alias
 Lab = Laboratory
+
+class Branch(db.Model):
+    __tablename__ = 'branches'
+    id = db.Column(db.Integer, primary_key=True)
+    laboratory_id = db.Column(db.Integer, db.ForeignKey('laboratories.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)           # اسم الفرع: مثل فرع العباسية
+    address = db.Column(db.String(255), nullable=False)        # العنوان بالتفصيل
+    phone_number = db.Column(db.String(50), nullable=True)     # رقم هاتف الفرع
+    working_hours = db.Column(db.String(200), nullable=True)   # مواعيد العمل: مثل 8 ص - 12 م
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class LabService(db.Model):
@@ -59,6 +70,7 @@ class LabService(db.Model):
     alias_name = db.Column(db.JSON, nullable=True) # List of alias names for the test (used for agent and search)
     keywords = db.Column(db.JSON, nullable=True) # List of keywords for the test (used for agent and search)
     sample_type = db.Column(db.String(100)) # Sample type required for the test (used for agent prompt)
+    tube = db.Column(db.String(100), nullable=True)  # <-- السطر الجديد
 
 
 class Platform(db.Model):
@@ -195,3 +207,15 @@ class Bundle(db.Model):
     price = db.Column(db.Float, nullable=False)
     description=db.Column(db.Text())  
     instructions = db.Column(db.Text())
+
+
+class ResultRequest(db.Model):
+    __tablename__ = 'result_requests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    phone_number = db.Column(db.String(50), nullable=False)   # رقم التليفون المسجل به
+    branch_name = db.Column(db.String(100), nullable=False)   # اسم الفرع الذي أجرى فيه الفحص
+    patient_name = db.Column(db.String(100), nullable=True)   # اسم المريض (اختياري)
+    status = db.Column(db.Enum(Status), default=Status.PENDING) # الحالة: Pending / Reviewed / Attended
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    comes_from = db.Column(db.String(100), default="unknown") # المنصة (واتساب / فيسبوك)

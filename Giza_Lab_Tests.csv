@@ -1,0 +1,143 @@
+﻿analysis,tube,price
+CBC,Violet بنفسجي,150
+Haemoglobin (Hb %),Violet بنفسجي,70
+Retics,Violet بنفسجي,200
+Hba1c,Violet بنفسجي,150
+ABO,Violet بنفسجي,50
+RH,Violet بنفسجي,50
+Malaria film,Violet بنفسجي,200
+G6PD(qual),Violet,200
+G6PD (quan),Violet,250
+Coomb's direct,Violet بنفسجي,150
+Ammonia,Violet بنفسجي,200
+ACTH (Am),Violet,300
+ACTH (pm),Violet,300
+RBS,greyish رمادي,50
+FBS,greyish رمادي,50
+PP(2h),greyish رمادي,50
+Coomb's indirect,Serum سيرم,200
+Homa ir,Yellow and greyish رمادي وسيرم,250
+Insulin (f ),Yellow (سيرم اصفر),200
+Insulin (pp),Yellow,200
+Urea,Yellow (سيرم اصفر),60
+Bun,Yellow (سيرم اصفر),60
+Creat,Yellow (سيرم اصفر),60
+Uric acid,Yellow (سيرم اصفر),60
+ALT (GPT),Yellow (سيرم اصفر),60
+AST (Got),Yellow (سيرم اصفر),60
+Albumin (ALb),Yellow (سيرم اصفر),70
+Alkaline phosphate (ALP),Yellow (سيرم اصفر),70
+Bilirubin (total&direct),Yellow (سيرم اصفر),120
+GGT,Yellow (سيرم اصفر),100
+Lipids profile,Yellow (سيرم اصفر),250
+CRP,Yellow (سيرم اصفر),100
+Rf,Yellow (سيرم اصفر),100
+ASOT,Yellow (سيرم اصفر),100
+ESR,Pink,100
+Widal test,Yellow (سيرم اصفر),200
+TSH,Yellow (سيرم اصفر),120
+Fsh,Yellow (سيرم اصفر),150
+LH,Yellow (سيرم اصفر),150
+PTH,Yellow (سيرم اصفر),300
+AMH,Yellow (سيرم اصفر),600
+T4 (total),Yellow (سيرم اصفر),120
+Ft4,Yellow,120
+T3 (total),Yellow (سيرم اصفر),120
+Ft3,Yellow,120
+Prolactin (PRL),Yellow (سيرم اصفر),150
+Progesterone,Yellow (سيرم اصفر),200
+Vitamin D (vit D),Yellow (سيرم اصفر),450
+Vit B12,Yellow (سيرم اصفر),450
+Lipase,Yellow (سيرم اصفر),150
+Cortisol (Am),Yellow (سيرم اصفر),200
+Cortisol (pm),Yellow,200
+Ferritin,Yellow (سيرم اصفر),200
+ANA (IF),Yellow (سيرم اصفر),600
+ANA(elisa),Yellow,300
+Anti ccp,Yellow (سيرم اصفر),400
+Hcg,Yellow (سيرم اصفر),70
+B_hcg,Yellow (سيرم اصفر),250
+LDH,Yellow (سيرم اصفر),150
+Calcium (total ),Yellow (سيرم اصفر),100
+Calcium (ioinz),Yellow (سيرم اصفر),150
+Mg,Yellow (سيرم اصفر),150
+Potassium (K),Yellow (سيرم اصفر),120
+Sodium (Na),Yellow (سيرم اصفر),120
+Mn,Yellow (سيرم اصفر),100
+Phosphorus,Yellow (سيرم اصفر),100
+Iron,Yellow (سيرم اصفر),100
+Tibc,Yellow (سيرم اصفر),150
+Transferren (saturation ),Yellow,250
+Iron profile,Yellow,600
+Zinc,Yellow,200
+Amylase,Yellow (سيرم اصفر),200
+HCV,Yellow (سيرم اصفر),150
+Total protein,Yellow,150
+HCV pcr,Yellow (سيرم اصفر),600
+HCV pcr DNA,Yellow (سيرم اصفر),600
+HBV ag,Yellow (سيرم اصفر),150
+HIV,Yellow (سيرم اصفر),200
+IgM _HAV,Yellow (سيرم اصفر),200
+IgG _HAV,Yellow (سيرم اصفر),200
+IgE total,Yellow (سيرم اصفر),250
+PSA (free),Yellow (سيرم اصفر),200
+PSA (total),Yellow (سيرم اصفر),200
+CEA,Yellow (سيرم اصفر),250
+Ca15.3,Yellow (سيرم اصفر),250
+Ca 19.9,Yellow (سيرم اصفر),250
+Ca 125,Yellow (سيرم اصفر),250
+AFP,Yellow (سيرم اصفر),250
+Tropinin,Yellow (سيرم اصفر),250
+Ck mb,Yellow (سيرم اصفر),250
+Ck total (CPK),Yellow (سيرم اصفر),150
+E2,Yellow (سيرم اصفر),200
+H pylori igg,Yellow (سيرم اصفر),200
+Anti cardiolipin (igg),Yellow,200
+Anti cardiolipin (igm),Yellow,200
+Testosterone (free),Yellow (سيرم اصفر),200
+Testosterone (total),Yellow (سيرم اصفر),200
+Anti thyroglobulin,Yellow (سيرم اصفر),300
+Anti microsomal antibody,Yellow (سيرم اصفر),300
+H pylori ab,Yellow (سيرم اصفر),200
+CMV (igg),Yellow (سيرم اصفر),150
+Cmv (igm),Yellow,150
+Toxoplasma (igg ),Yellow (سيرم اصفر),150
+Toxoplasma (igm),Yellow,150
+HSV. (igg),Yellow (سيرم اصفر),150
+HSV (igm),Yellow,150
+Rubella (igg),Yellow (سيرم اصفر),150
+Rubella (igm),Yellow,150
+Amyloid A protein,Yellow,500
+ANCA C,Yellow,400
+ANCA P,Yellow,400
+DHEA,Yellow,300
+DHEA-S,Yellow,300
+VDRL,Yellow,200
+Chloride,Yellow,150
+C-peptide (fasting),Yellow,250
+C -peptide (pp),Yellow,250
+Pro-BNP,Yellow,1000
+B2-glycoprotein (igg),Yellow,350
+B2-glycoprotein (igm),Yellow,350
+"PT, INR",Blue ازرق,100
+PTT,Blue ازرق,100
+D_dimer,Blue ازرق,300
+Lupus,Blue,300
+Protein s,Blue,600
+Protein c,Blue,800
+quantiferon tb gold,Green,2500
+BT,,50
+CT,,50
+Urine,Urine,60
+Urine culture,Urine,200
+Alb/creat ratio,Urine,200
+Pus culture,,250
+Blood culture,,500
+Stool,Stool,60
+H_pylori ag in stool,Stool,250
+Occult blood in stool,Stool,250
+Calprotectin,Stool,500
+Schebo test,Stool,900
+Semen,,250
+egfr,Yellow (سيرم اصفر),120
+Drugs,Urine,250

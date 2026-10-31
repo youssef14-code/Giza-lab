@@ -161,7 +161,7 @@ class TestsService:
     def create_lab_service(self, laboratory_id: int = None, name: str = None, price: float = None, description: str = None,
                            patient_instructions: str = None, duration: int = None,
                            sample_type: str = None, keywords: list[str] = None,
-                           alias_name: list[str] = None):
+                           alias_name: list[str] = None, tube: str = None):
         """Create a LabService and index it in Qdrant. Duplicate names are rejected via a
         pre-check plus an IntegrityError catch (covers the race window between check and insert —
         requires a unique constraint on LabService.name). Returns (LabService or None, message).
@@ -185,7 +185,8 @@ class TestsService:
                 duration=duration,
                 sample_type=sample_type,
                 keywords=keywords,
-                alias_name=alias_name
+                alias_name=alias_name,
+                tube=tube  # <-- أضف tube هنا
             )
             db.session.add(new_test)
             db.session.commit()
